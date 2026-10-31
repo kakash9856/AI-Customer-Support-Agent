@@ -6,7 +6,8 @@ from agents.support_agent import run_support_agent
 
 from database.auth_db import (
     register_user,
-    login_user
+    login_user,
+    debug_user_count
 )
 
 from database.ticket_db import (
@@ -116,6 +117,13 @@ if st.session_state.user is None:
             st.subheader("Create Your Account")
             st.write("Join us for smarter customer support.")
 
+            # DEBUG: Cloud database user count
+            try:
+                total_users = debug_user_count()
+                st.info(f"Total registered users: {total_users}")
+            except Exception as e:
+                st.error(f"Database count error: {e}")
+
             reg_name = st.text_input(
                 "Full Name",
                 placeholder="Enter your full name",
@@ -157,7 +165,6 @@ if st.session_state.user is None:
                     st.warning("Please enter a valid email address.")
 
                 else:
-                    # DEBUG: Check email received from registration form
                     entered_email = reg_email.strip().lower()
 
                     st.info(

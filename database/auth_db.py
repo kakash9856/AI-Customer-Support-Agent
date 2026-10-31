@@ -48,6 +48,20 @@ def hash_password(password, salt):
     ).hex()
 
 
+# DEBUG: Total registered users
+def debug_user_count():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SELECT COUNT(*) FROM users")
+        count = cursor.fetchone()[0]
+        return count
+
+    finally:
+        conn.close()
+
+
 def register_user(name, email, password):
     email = email.strip().lower()
 
