@@ -2,7 +2,7 @@
 import traceback
 
 from rag.vector_store import get_vector_store
-from config import llm
+from app_config import llm
 
 
 def extract_answer(response):
