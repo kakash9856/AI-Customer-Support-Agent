@@ -7,7 +7,8 @@ from agents.support_agent import run_support_agent
 from database.auth_db import (
     register_user,
     login_user,
-    debug_user_count
+    debug_user_count,
+    debug_database_info
 )
 
 from database.ticket_db import (
@@ -123,6 +124,16 @@ if st.session_state.user is None:
                 st.info(f"Total registered users: {total_users}")
             except Exception as e:
                 st.error(f"Database count error: {e}")
+
+            # DEBUG: Database file information
+            try:
+                database_info = debug_database_info()
+
+                st.write("Database Diagnostics:")
+                st.json(database_info)
+
+            except Exception as e:
+                st.error(f"Database diagnostics error: {e}")
 
             reg_name = st.text_input(
                 "Full Name",

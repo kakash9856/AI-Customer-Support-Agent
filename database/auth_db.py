@@ -1,10 +1,20 @@
 
+
 import sqlite3
 import hashlib
 import secrets
 from pathlib import Path
 
 DB_PATH = Path(__file__).parent / "tickets.db"
+
+
+# DEBUG: Database information
+def debug_database_info():
+    return {
+        "database_path": str(DB_PATH.resolve()),
+        "database_exists": DB_PATH.exists(),
+        "database_size": DB_PATH.stat().st_size if DB_PATH.exists() else 0
+    }
 
 
 def get_connection():
@@ -57,7 +67,6 @@ def debug_user_count():
         cursor.execute("SELECT COUNT(*) FROM users")
         count = cursor.fetchone()[0]
         return count
-
     finally:
         conn.close()
 
