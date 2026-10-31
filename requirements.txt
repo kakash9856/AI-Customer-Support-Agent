@@ -1,0 +1,26 @@
+streamlit
+python-dotenv
+
+# Gemini API
+google-genai
+langchain-google-genai
+
+# LangChain and LangGraph
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+langgraph
+
+# RAG and Vector Database
+langchain-chroma
+chromadb
+
+# PDF processing
+pypdf
+
+# Missing dependencies encountered
+filetype
+uuid-utils
+jsonpatch
+jsonpointer

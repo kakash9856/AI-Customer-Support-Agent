@@ -1,0 +1,267 @@
+
+/* -------- GLOBAL THEME -------- */
+
+.stApp {
+    background: linear-gradient(135deg, #0B0F19, #111827);
+    color: #F8FAFC;
+}
+
+h1, h2, h3 {
+    color: #F8FAFC !important;
+    font-weight: 700 !important;
+}
+
+/* -------- SIDEBAR -------- */
+
+section[data-testid="stSidebar"] {
+    background: #111827;
+    border-right: 1px solid #273449;
+}
+
+section[data-testid="stSidebar"] p {
+    color: #CBD5E1;
+}
+
+/* -------- METRIC CARDS -------- */
+
+div[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #192338, #111827);
+    border: 1px solid #334155;
+    padding: 22px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+div[data-testid="stMetricLabel"] {
+    color: #94A3B8;
+}
+
+div[data-testid="stMetricValue"] {
+    color: #A78BFA;
+    font-weight: 700;
+}
+
+/* -------- BUTTONS -------- */
+
+.stButton > button {
+    background: linear-gradient(90deg, #7C3AED, #4F46E5);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 18px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(90deg, #6D28D9, #4338CA);
+    border: 1px solid #A78BFA;
+    transform: translateY(-2px);
+}
+
+/* -------- INPUT FIELDS -------- */
+
+.stTextInput input,
+.stTextArea textarea {
+    background-color: #151B2B !important;
+    color: #F8FAFC !important;
+    border: 1px solid #334155 !important;
+    border-radius: 10px !important;
+}
+
+.stTextInput input:focus,
+.stTextArea textarea:focus {
+    border-color: #8B5CF6 !important;
+}
+
+/* -------- TICKET EXPANDERS -------- */
+
+div[data-testid="stExpander"] {
+    background: #151B2B;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+/* -------- CHAT MESSAGES -------- */
+
+div[data-testid="stChatMessage"] {
+    background: #151B2B;
+    border: 1px solid #273449;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+/* -------- DIVIDERS -------- */
+
+hr {
+    border-color: #334155;
+}
+
+/* -------- TABS -------- */
+
+button[data-baseweb="tab"] {
+    color: #CBD5E1;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: #A78BFA;
+}
+
+/* -------- LINKS -------- */
+
+a {
+    color: #A78BFA !important;
+}
+
+
+/* =================================
+   PREMIUM ADMIN DASHBOARD
+================================= */
+
+/* Dashboard headings */
+.stApp h1,
+.stApp h2,
+.stApp h3 {
+    letter-spacing: -0.5px;
+}
+
+/* Analytics metric cards */
+div[data-testid="stMetric"] {
+    background: linear-gradient(145deg, #1C2540, #111827);
+    border: 1px solid #3B4260;
+    border-radius: 18px;
+    padding: 22px 20px;
+    min-height: 125px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    transition: all 0.25s ease;
+}
+
+div[data-testid="stMetric"]:hover {
+    border-color: #8B5CF6;
+    transform: translateY(-4px);
+}
+
+div[data-testid="stMetricLabel"] {
+    color: #A5B4FC !important;
+    font-size: 14px;
+}
+
+div[data-testid="stMetricValue"] {
+    color: #F8FAFC !important;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+/* Chart containers */
+div[data-testid="stVegaLiteChart"],
+div[data-testid="stArrowVegaLiteChart"] {
+    background: #151B2B;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 15px;
+}
+
+/* Ticket expanders */
+div[data-testid="stExpander"] {
+    background: #151B2B;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    margin-bottom: 12px;
+}
+
+div[data-testid="stExpander"]:hover {
+    border-color: #8B5CF6;
+}
+
+/* Select boxes */
+div[data-baseweb="select"] > div {
+    background-color: #151B2B;
+    border-color: #475569;
+    border-radius: 10px;
+}
+
+/* Dashboard buttons */
+.stButton > button {
+    transition: all 0.25s ease;
+}
+
+/* Status labels */
+.status-open {
+    color: #FCA5A5;
+}
+
+.status-progress {
+    color: #FCD34D;
+}
+
+.status-resolved {
+    color: #86EFAC;
+}
+
+/* =================================
+   PREMIUM AI CHAT INTERFACE
+================================= */
+
+/* Chat section */
+div[data-testid="stChatMessage"] {
+    max-width: 900px;
+    border-radius: 18px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    border: 1px solid #334155;
+    background: linear-gradient(145deg, #192338, #111827);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* User and assistant message spacing */
+div[data-testid="stChatMessage"]:has(
+    [data-testid="chatAvatarIcon-user"]
+) {
+    border-color: #6D5BD0;
+    background: linear-gradient(145deg, #252044, #191B35);
+}
+
+div[data-testid="stChatMessage"]:has(
+    [data-testid="chatAvatarIcon-assistant"]
+) {
+    border-color: #334155;
+    background: linear-gradient(145deg, #192338, #111827);
+}
+
+/* Chat text */
+div[data-testid="stChatMessage"] p {
+    color: #F1F5F9;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+/* Chat input container */
+div[data-testid="stChatInput"] {
+    background: #151B2B;
+    border: 1px solid #475569;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Chat input text */
+div[data-testid="stChatInput"] textarea {
+    color: #F8FAFC !important;
+    background: transparent !important;
+}
+
+/* Chat input focus */
+div[data-testid="stChatInput"]:focus-within {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+/* Chat header */
+div[data-testid="stChatMessage"] strong {
+    color: #C4B5FD;
+}
+
+/* Chat divider */
+.stApp hr {
+    border-color: #334155;
+}

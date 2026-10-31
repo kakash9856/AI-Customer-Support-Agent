@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+.streamlit/secrets.toml
+
+chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+
+.DS_Store

@@ -1,0 +1,22 @@
+
+
+Q: What are your business hours?
+A: Our customer support team is available Monday to Saturday, 9 AM to 6 PM.
+
+Q: How can I track my order?
+A: You can track your order using the tracking ID sent to your registered email or phone number.
+
+Q: What is your refund policy?
+A: Refund requests can be raised within 7 days of receiving the product, subject to our refund policy.
+
+Q: How can I contact customer support?
+A: You can contact our support team through this chatbot or email support@example.com.
+
+Q: How long does delivery take?
+A: Standard delivery usually takes 3-5 business days.
+
+Q: Can I cancel my order?
+A: Orders can be cancelled before they are shipped.
+
+Q: What payment methods are accepted?
+A: We accept UPI, debit cards, credit cards and net banking.
