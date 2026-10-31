@@ -59,14 +59,19 @@ def hash_password(password, salt):
 
 
 # DEBUG: Total registered users
-def debug_user_count():
+def debug_user_records():
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
-        cursor.execute("SELECT COUNT(*) FROM users")
-        count = cursor.fetchone()[0]
-        return count
+        cursor.execute("""
+            SELECT id, name, email, role
+            FROM users
+            ORDER BY id
+        """)
+
+        return cursor.fetchall()
+
     finally:
         conn.close()
 
