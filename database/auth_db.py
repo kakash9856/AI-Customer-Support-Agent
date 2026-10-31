@@ -58,10 +58,6 @@ def register_user(name, email, password):
     cursor = conn.cursor()
 
     try:
-        # Debug information for Streamlit Cloud
-        print("DATABASE PATH:", DB_PATH.resolve())
-        print("REGISTER EMAIL:", repr(email))
-
         cursor.execute("""
             SELECT id, email
             FROM users
@@ -70,10 +66,12 @@ def register_user(name, email, password):
 
         existing_user = cursor.fetchone()
 
-        print("EXISTING USER:", existing_user)
-
         if existing_user:
-            return False, "This email is already registered."
+            return False, (
+                f"Email already exists. "
+                f"Database path: {DB_PATH.resolve()} | "
+                f"Matched email: {existing_user[1]}"
+            )
 
         cursor.execute("""
             INSERT INTO users (
@@ -92,12 +90,10 @@ def register_user(name, email, password):
         return True, "Registration successful!"
 
     except sqlite3.IntegrityError as e:
-        print("INTEGRITY ERROR:", str(e))
-        return False, f"Database error: {str(e)}"
+        return False, f"SQLite Integrity Error: {str(e)}"
 
     except Exception as e:
-        print("UNEXPECTED ERROR:", str(e))
-        return False, f"Unexpected error: {str(e)}"
+        return False, f"Unexpected Error: {type(e).__name__}: {str(e)}"
 
     finally:
         conn.close()
