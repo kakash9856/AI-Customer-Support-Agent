@@ -1,3 +1,4 @@
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -11,39 +12,49 @@ BASE_DIR = Path(__file__).parent.parent
 DB_PATH = BASE_DIR / "database" / "chroma_db"
 
 
-def create_vector_store():
+def get_embeddings():
     api_key = os.getenv("GOOGLE_API_KEY")
 
     if not api_key:
         raise ValueError("GOOGLE_API_KEY missing in .env")
 
-    chunks = load_and_split_pdf()
-
-    if not chunks:
-        raise ValueError("No text found in PDF files.")
-
-    embeddings = GoogleGenerativeAIEmbeddings(
+    return GoogleGenerativeAIEmbeddings(
         model="models/gemini-embedding-001",
         google_api_key=api_key
     )
 
-    vector_store = Chroma.from_documents(
-        documents=chunks,
-        embedding=embeddings,
-        persist_directory=str(DB_PATH),
-        collection_name="customer_support"
+
+def create_vector_store():
+
+    print("Starting document indexing...")
+
+    chunks = load_and_split_pdf()
+
+    if not chunks:
+        raise ValueError("No documents found.")
+
+    embeddings = get_embeddings()
+
+    DB_PATH.mkdir(parents=True, exist_ok=True)
+
+    vector_store = Chroma(
+        collection_name="customer_support",
+        embedding_function=embeddings,
+        persist_directory=str(DB_PATH)
     )
+
+    # Add documents to existing database
+    vector_store.add_documents(chunks)
+
+    print("Documents successfully added to ChromaDB!")
+    print("Total chunks indexed:", len(chunks))
 
     return vector_store
 
 
 def get_vector_store():
-    api_key = os.getenv("GOOGLE_API_KEY")
 
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/gemini-embedding-001",
-        google_api_key=api_key
-    )
+    embeddings = get_embeddings()
 
     return Chroma(
         collection_name="customer_support",
