@@ -1,21 +1,26 @@
 
-
 from rag.vector_store import get_vector_store
 from config import llm
 
 
 def ask_question(question, chat_history=None, intent="general_query"):
 
-    print("1. Searching PDF...")
+    print("1. Searching Knowledge Base...")
     print("Detected Intent:", intent)
 
     vector_store = get_vector_store()
 
-    search_query = f"{intent.replace('_', ' ')}: {question}"
+    # Search using the original customer question
+    search_query = question
 
     docs = vector_store.similarity_search(search_query, k=4)
 
     print("2. Retrieved documents:", len(docs))
+
+    # DEBUG: Display retrieved document content
+    for i, doc in enumerate(docs):
+        print(f"\nDocument {i + 1}:")
+        print(doc.page_content)
 
     if not docs:
         return "No relevant information found in the knowledge base."

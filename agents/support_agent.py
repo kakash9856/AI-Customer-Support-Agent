@@ -37,8 +37,9 @@ def classify_query(state: SupportState):
 def answer_question(state: SupportState):
 
     answer = ask_question(
-        state["question"],
-        state.get("chat_history", [])
+        question=state["question"],
+        chat_history=state.get("chat_history", []),
+        intent=state["category"]
     )
 
     return {"answer": answer}
@@ -71,7 +72,10 @@ def create_support_ticket(state: SupportState):
     except PermissionError:
         return {
             "ticket_id": "",
-            "answer": "Please login with a valid customer account to create a support ticket."
+            "answer": (
+                "Please login with a valid customer account "
+                "to create a support ticket."
+            )
         }
 
     except Exception as e:
@@ -79,7 +83,10 @@ def create_support_ticket(state: SupportState):
 
         return {
             "ticket_id": "",
-            "answer": "Sorry, we could not create your support ticket. Please try again."
+            "answer": (
+                "Sorry, we could not create your support ticket. "
+                "Please try again."
+            )
         }
 
 
