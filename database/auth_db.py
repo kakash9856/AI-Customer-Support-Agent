@@ -59,13 +59,19 @@ def hash_password(password, salt):
 
 
 # DEBUG: Total registered users
+
 def debug_user_records():
     conn = get_connection()
     cursor = conn.cursor()
 
     try:
         cursor.execute("""
-            SELECT id, name, email, role
+            SELECT
+                id,
+                name,
+                email,
+                role,
+                rowid
             FROM users
             ORDER BY id
         """)
@@ -74,7 +80,6 @@ def debug_user_records():
 
     finally:
         conn.close()
-
 
 def register_user(name, email, password):
     email = email.strip().lower()
