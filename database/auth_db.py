@@ -26,7 +26,6 @@ def create_users_table():
         )
     """)
 
-    # Existing database mein role column add karega
     cursor.execute("PRAGMA table_info(users)")
     columns = [column[1] for column in cursor.fetchall()]
 
@@ -48,6 +47,7 @@ def hash_password(password, salt):
         200000
     ).hex()
 
+
 def register_user(name, email, password):
     email = email.strip().lower()
 
@@ -58,12 +58,21 @@ def register_user(name, email, password):
     cursor = conn.cursor()
 
     try:
-        cursor.execute(
-            "SELECT id FROM users WHERE email = ?",
-            (email,)
-        )
+        # Debug information for Streamlit Cloud
+        print("DATABASE PATH:", DB_PATH.resolve())
+        print("REGISTER EMAIL:", repr(email))
 
-        if cursor.fetchone():
+        cursor.execute("""
+            SELECT id, email
+            FROM users
+            WHERE LOWER(TRIM(email)) = ?
+        """, (email,))
+
+        existing_user = cursor.fetchone()
+
+        print("EXISTING USER:", existing_user)
+
+        if existing_user:
             return False, "This email is already registered."
 
         cursor.execute("""
@@ -83,10 +92,12 @@ def register_user(name, email, password):
         return True, "Registration successful!"
 
     except sqlite3.IntegrityError as e:
-     return False, f"Database error: {str(e)}"
+        print("INTEGRITY ERROR:", str(e))
+        return False, f"Database error: {str(e)}"
 
     except Exception as e:
-     return False, f"Unexpected error: {str(e)}"
+        print("UNEXPECTED ERROR:", str(e))
+        return False, f"Unexpected error: {str(e)}"
 
     finally:
         conn.close()
