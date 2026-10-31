@@ -157,9 +157,16 @@ if st.session_state.user is None:
                     st.warning("Please enter a valid email address.")
 
                 else:
+                    # DEBUG: Check email received from registration form
+                    entered_email = reg_email.strip().lower()
+
+                    st.info(
+                        f"DEBUG - Entered Email: {entered_email}"
+                    )
+
                     success, message = register_user(
                         reg_name.strip(),
-                        reg_email.strip(),
+                        entered_email,
                         reg_password
                     )
 
