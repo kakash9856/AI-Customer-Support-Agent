@@ -1,5 +1,4 @@
 
-
 import sqlite3
 import hashlib
 import secrets
@@ -49,8 +48,9 @@ def hash_password(password, salt):
         200000
     ).hex()
 
-
 def register_user(name, email, password):
+    email = email.strip().lower()
+
     salt = secrets.token_hex(16)
     password_hash = hash_password(password, salt)
 
@@ -58,14 +58,22 @@ def register_user(name, email, password):
     cursor = conn.cursor()
 
     try:
+        cursor.execute(
+            "SELECT id FROM users WHERE email = ?",
+            (email,)
+        )
+
+        if cursor.fetchone():
+            return False, "This email is already registered."
+
         cursor.execute("""
             INSERT INTO users (
                 name, email, password_hash, salt, role
             )
             VALUES (?, ?, ?, ?, ?)
         """, (
-            name,
-            email.lower(),
+            name.strip(),
+            email,
             password_hash,
             salt,
             "customer"
@@ -74,8 +82,8 @@ def register_user(name, email, password):
         conn.commit()
         return True, "Registration successful!"
 
-    except sqlite3.IntegrityError:
-        return False, "This email is already registered."
+    except sqlite3.IntegrityError as e:
+        return False, f"Database error: {e}"
 
     finally:
         conn.close()
@@ -89,7 +97,7 @@ def login_user(email, password):
         SELECT id, name, email, password_hash, salt, role
         FROM users
         WHERE email = ?
-    """, (email.lower(),))
+    """, (email.strip().lower(),))
 
     user = cursor.fetchone()
     conn.close()
@@ -110,6 +118,8 @@ def login_user(email, password):
         }
 
     return None
+
+
 def update_user_role(email, role):
     allowed_roles = ["customer", "admin"]
 
@@ -123,13 +133,62 @@ def update_user_role(email, role):
         UPDATE users
         SET role = ?
         WHERE email = ?
-    """, (role, email.lower()))
+    """, (role, email.strip().lower()))
 
     updated = cursor.rowcount
+
     conn.commit()
     conn.close()
 
     return updated > 0
 
 
+def get_user_by_email(email):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id
+        FROM users
+        WHERE email = ?
+    """, (email.strip().lower(),))
+
+    user = cursor.fetchone()
+    conn.close()
+
+    return user is not None
+
+
+def update_user_password(email, new_password):
+    if len(new_password) < 8:
+        return False, "Password must be at least 8 characters."
+
+    salt = secrets.token_hex(16)
+    password_hash = hash_password(new_password, salt)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE users
+        SET password_hash = ?, salt = ?
+        WHERE email = ?
+    """, (
+        password_hash,
+        salt,
+        email.strip().lower()
+    ))
+
+    updated = cursor.rowcount
+
+    conn.commit()
+    conn.close()
+
+    if updated:
+        return True, "Password updated successfully!"
+
+    return False, "Account not found."
+
+
+# Create users table when this file is imported
 create_users_table()

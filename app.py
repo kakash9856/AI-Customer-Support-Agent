@@ -26,6 +26,7 @@ st.set_page_config(
     layout="wide"
 )
 
+
 # ---------------- CUSTOM CSS ----------------
 
 with open("style.css", encoding="utf-8") as f:
@@ -33,6 +34,7 @@ with open("style.css", encoding="utf-8") as f:
         f"<style>{f.read()}</style>",
         unsafe_allow_html=True
     )
+
 
 # ---------------- SESSION STATE ----------------
 
@@ -44,9 +46,6 @@ if "messages" not in st.session_state:
 
 if "show_tickets" not in st.session_state:
     st.session_state.show_tickets = False
-
-
-# ---------------- AUTHENTICATION ----------------
 
 
 # ---------------- AUTHENTICATION ----------------
@@ -84,8 +83,11 @@ if st.session_state.user is None:
                 key="login_password"
             )
 
-            if st.button("Login →", key="login_button",
-                         use_container_width=True):
+            if st.button(
+                "Login →",
+                key="login_button",
+                use_container_width=True
+            ):
 
                 if not login_email.strip() or not login_password:
                     st.warning("Please enter email and password.")
@@ -133,15 +135,23 @@ if st.session_state.user is None:
                 key="reg_password"
             )
 
-            if st.button("Create Account →",
-                         key="register_button",
-                         use_container_width=True):
+            if st.button(
+                "Create Account →",
+                key="register_button",
+                use_container_width=True
+            ):
 
-                if not reg_name.strip() or not reg_email.strip() or not reg_password:
+                if (
+                    not reg_name.strip()
+                    or not reg_email.strip()
+                    or not reg_password
+                ):
                     st.warning("Please fill in all fields.")
 
                 elif len(reg_password) < 8:
-                    st.warning("Password must be at least 8 characters.")
+                    st.warning(
+                        "Password must be at least 8 characters."
+                    )
 
                 elif "@" not in reg_email or "." not in reg_email:
                     st.warning("Please enter a valid email address.")
@@ -155,13 +165,14 @@ if st.session_state.user is None:
 
                     if success:
                         st.success(message)
-                        st.info("Now open Login tab and sign in.")
+                        st.info(
+                            "Now open Login tab and sign in."
+                        )
 
                     else:
                         st.error(message)
 
     st.stop()
-
 
 
 # ---------------- LOGGED-IN USER ----------------
@@ -185,7 +196,10 @@ with st.sidebar:
     st.success(f"Welcome, {user['name']}!")
     st.write("Role:", user.get("role", "customer").title())
 
-    if st.button("Logout", use_container_width=True):
+    if st.button(
+        "Logout",
+        use_container_width=True
+    ):
 
         st.session_state.user = None
         st.session_state.messages = []
@@ -199,7 +213,10 @@ with st.sidebar:
     st.divider()
     st.header("Support Options")
 
-    if st.button("Clear Chat", use_container_width=True):
+    if st.button(
+        "Clear Chat",
+        use_container_width=True
+    ):
         st.session_state.messages = []
         st.rerun()
 
@@ -227,7 +244,10 @@ with st.sidebar:
             key="manual_issue"
         )
 
-        if st.button("Create Ticket", use_container_width=True):
+        if st.button(
+            "Create Ticket",
+            use_container_width=True
+        ):
 
             if issue.strip():
 
@@ -239,7 +259,9 @@ with st.sidebar:
                         user_id=user["id"]
                     )
 
-                    st.success(f"Ticket created! ID: {ticket_id}")
+                    st.success(
+                        f"Ticket created! ID: {ticket_id}"
+                    )
                     st.rerun()
 
                 except Exception as e:
@@ -255,7 +277,10 @@ with st.sidebar:
         st.divider()
         st.subheader("🛠️ Admin Ticket Management")
 
-        if st.button("View All Tickets", use_container_width=True):
+        if st.button(
+            "View All Tickets",
+            use_container_width=True
+        ):
             st.session_state.show_tickets = True
 
         search_id = st.text_input(
@@ -263,7 +288,10 @@ with st.sidebar:
             key="admin_search_id"
         )
 
-        if st.button("Search Ticket", use_container_width=True):
+        if st.button(
+            "Search Ticket",
+            use_container_width=True
+        ):
 
             if search_id.strip():
 
@@ -373,7 +401,9 @@ if is_admin:
 
             for ticket in tickets:
 
-                with st.expander(f"{ticket[0]} - {ticket[4]}"):
+                with st.expander(
+                    f"{ticket[0]} - {ticket[4]}"
+                ):
 
                     st.write("Customer:", ticket[1])
                     st.write("Email:", ticket[2])
@@ -381,7 +411,11 @@ if is_admin:
                     st.write("Created At:", ticket[5])
                     st.write("User ID:", ticket[6])
 
-                    statuses = ["Open", "In Progress", "Resolved"]
+                    statuses = [
+                        "Open",
+                        "In Progress",
+                        "Resolved"
+                    ]
 
                     new_status = st.selectbox(
                         "Update Status",
@@ -390,7 +424,10 @@ if is_admin:
                         key=f"status_{ticket[0]}"
                     )
 
-                    if st.button("Save Status", key=f"save_{ticket[0]}"):
+                    if st.button(
+                        "Save Status",
+                        key=f"save_{ticket[0]}"
+                    ):
 
                         try:
                             updated = update_ticket_status(
@@ -400,13 +437,20 @@ if is_admin:
                             )
 
                             if updated:
-                                st.success("Ticket status updated!")
+                                st.success(
+                                    "Ticket status updated!"
+                                )
                                 st.rerun()
+
                             else:
-                                st.error("Unable to update ticket.")
+                                st.error(
+                                    "Unable to update ticket."
+                                )
 
                         except PermissionError:
-                            st.error("Only admins can update ticket status.")
+                            st.error(
+                                "Only admins can update ticket status."
+                            )
 
         else:
             st.info("No tickets found.")
@@ -448,7 +492,9 @@ if not is_admin:
 
             for ticket in my_tickets:
 
-                with st.expander(f"{ticket[0]} - {ticket[4]}"):
+                with st.expander(
+                    f"{ticket[0]} - {ticket[4]}"
+                ):
 
                     st.write("Ticket ID:", ticket[0])
                     st.write("Customer:", ticket[1])
@@ -458,7 +504,9 @@ if not is_admin:
                     st.write("Created At:", ticket[5])
 
         else:
-            st.info("You have not created any support tickets yet.")
+            st.info(
+                "You have not created any support tickets yet."
+            )
 
     except PermissionError:
         st.error("Unable to access your tickets.")
@@ -477,7 +525,9 @@ for message in st.session_state.messages:
 
 # ---------------- CUSTOMER INPUT ----------------
 
-user_input = st.chat_input("How can I help you today?")
+user_input = st.chat_input(
+    "How can I help you today?"
+)
 
 if user_input:
 
@@ -494,7 +544,6 @@ if user_input:
         with st.spinner("Finding information..."):
 
             try:
-
                 chat_history = st.session_state.messages[:-1]
 
                 result = run_support_agent(
