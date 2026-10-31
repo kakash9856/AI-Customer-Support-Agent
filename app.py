@@ -1,4 +1,5 @@
 
+
 import pandas as pd
 import streamlit as st
 
@@ -6,10 +7,7 @@ from agents.support_agent import run_support_agent
 
 from database.auth_db import (
     register_user,
-    login_user,
-    debug_user_count,
-    debug_database_info,
-    debug_user_records
+    login_user
 )
 
 from database.ticket_db import (
@@ -119,42 +117,6 @@ if st.session_state.user is None:
             st.subheader("Create Your Account")
             st.write("Join us for smarter customer support.")
 
-            # DEBUG: Cloud database user count
-            try:
-                total_users = debug_user_count()
-                st.info(f"Total registered users: {total_users}")
-
-            except Exception as e:
-                st.error(f"Database count error: {e}")
-
-            # DEBUG: Database file information
-            try:
-                database_info = debug_database_info()
-
-                st.write("Database Diagnostics:")
-                st.json(database_info)
-
-            except Exception as e:
-                st.error(f"Database diagnostics error: {e}")
-
-            # DEBUG: Existing user records
-            try:
-                records = debug_user_records()
-
-                st.write("Existing Database User Records:")
-
-                for record in records:
-                    st.write({
-                        "User ID": record[0],
-                        "Name": record[1],
-                        "Email": record[2],
-                        "Role": record[3]
-                    })
-
-            except Exception as e:
-                st.error(f"User records error: {e}")
-
-            # Registration form
             reg_name = st.text_input(
                 "Full Name",
                 placeholder="Enter your full name",
@@ -197,10 +159,6 @@ if st.session_state.user is None:
 
                 else:
                     entered_email = reg_email.strip().lower()
-
-                    st.info(
-                        f"DEBUG - Entered Email: {entered_email}"
-                    )
 
                     success, message = register_user(
                         reg_name.strip(),
@@ -602,14 +560,13 @@ if user_input:
                 answer = result["answer"]
                 st.markdown(answer)
 
-            except Exception as e:
-
+            except Exception:
                 answer = (
                     "Sorry, something went wrong. "
                     "Please try again."
                 )
 
-                st.error(f"Error: {e}")
+                st.error(answer)
 
     st.session_state.messages.append({
         "role": "assistant",
