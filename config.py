@@ -1,15 +1,22 @@
 
+
 import os
+import streamlit as st
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 if not GOOGLE_API_KEY:
-    raise ValueError("GOOGLE_API_KEY missing. Check your .env file.")
+    try:
+        GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+    except Exception:
+        GOOGLE_API_KEY = None
+
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY missing. Configure it in .env or Streamlit Secrets.")
+
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-3.5-flash-lite",
