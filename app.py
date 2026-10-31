@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 
 from agents.support_agent import run_support_agent
+
 from database.auth_db import (
     register_user,
     login_user,
@@ -10,7 +11,6 @@ from database.auth_db import (
     debug_database_info,
     debug_user_records
 )
-
 
 from database.ticket_db import (
     create_ticket,
@@ -123,6 +123,7 @@ if st.session_state.user is None:
             try:
                 total_users = debug_user_count()
                 st.info(f"Total registered users: {total_users}")
+
             except Exception as e:
                 st.error(f"Database count error: {e}")
 
@@ -136,24 +137,24 @@ if st.session_state.user is None:
             except Exception as e:
                 st.error(f"Database diagnostics error: {e}")
 
-
-                   # DEBUG: Existing user records
+            # DEBUG: Existing user records
             try:
-               records = debug_user_records()
+                records = debug_user_records()
 
-               st.write("Existing Database User Records:")
+                st.write("Existing Database User Records:")
 
-               for record in records:
-                  st.write({
-                      "User ID": record[0],
-                      "Name": record[1],
-                      "Email": record[2],
-                      "Role": record[3]
-                  })
+                for record in records:
+                    st.write({
+                        "User ID": record[0],
+                        "Name": record[1],
+                        "Email": record[2],
+                        "Role": record[3]
+                    })
 
             except Exception as e:
-               st.error(f"User records error: {e}")
+                st.error(f"User records error: {e}")
 
+            # Registration form
             reg_name = st.text_input(
                 "Full Name",
                 placeholder="Enter your full name",
