@@ -548,7 +548,7 @@ if user_input:
 
             try:
                 chat_history = st.session_state.messages[:-1]
-
+                st.info("DEBUG: Chat request reached app.py")
                 result = run_support_agent(
                     question=user_input,
                     chat_history=chat_history,
@@ -556,7 +556,7 @@ if user_input:
                     customer_email=user["email"],
                     user_id=user["id"]
                 )
-
+                st.write("DEBUG: Agent result received")
                 answer = result["answer"]
                 st.markdown(answer)
 
