@@ -1,11 +1,15 @@
 
-
 import os
 import streamlit as st
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+
+# Load local environment variables
 load_dotenv()
 
+# Read API key from local .env or Streamlit Cloud Secrets
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 if not GOOGLE_API_KEY:
@@ -15,15 +19,17 @@ if not GOOGLE_API_KEY:
         GOOGLE_API_KEY = None
 
 if not GOOGLE_API_KEY:
-    raise ValueError("GOOGLE_API_KEY missing. Configure it in .env or Streamlit Secrets.")
+    raise ValueError(
+        "GOOGLE_API_KEY missing. Add it to .env or Streamlit Cloud Secrets."
+    )
 
-
+# Gemini LLM
 llm = ChatGoogleGenerativeAI(
     model="gemini-3.5-flash-lite",
     google_api_key=GOOGLE_API_KEY,
     temperature=0.2,
     timeout=60,
-    max_retries=1
+    max_retries=2
 )
 
 # Customer Support Personality
@@ -43,6 +49,7 @@ Your responsibilities:
 FAQ KNOWLEDGE:
 {faq_context}
 """
+
 
 # Load FAQs
 def load_faqs():
@@ -97,5 +104,7 @@ def generate_response(messages):
 
 # Test Gemini Connection
 def test_gemini():
-    response = llm.invoke("Reply only: Gemini connected successfully!")
+    response = llm.invoke(
+        "Reply only: Gemini connected successfully!"
+    )
     return response.content
