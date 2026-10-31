@@ -83,7 +83,10 @@ def register_user(name, email, password):
         return True, "Registration successful!"
 
     except sqlite3.IntegrityError as e:
-        return False, f"Database error: {e}"
+     return False, f"Database error: {str(e)}"
+
+    except Exception as e:
+     return False, f"Unexpected error: {str(e)}"
 
     finally:
         conn.close()
